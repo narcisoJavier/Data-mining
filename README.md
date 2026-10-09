@@ -41,8 +41,8 @@ It fulfills all requirements of the **Midterm Summative Activity**, featuring:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/narcisoJavier/tagalog-topic-and-sentiment-analysis.git
-cd tagalog-topic-and-sentiment-analysis
+git clone https://github.com/narcisoJavier/Data-mining.git
+cd Data-mining
 ```
 
 ### 2. Set Up Virtual Environment & Install Dependencies
