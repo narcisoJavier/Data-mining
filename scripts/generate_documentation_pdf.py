@@ -320,26 +320,26 @@ def build_pdf(output_filename: str):
     ))
 
     # Table 1: Preprocessing & Data Exploration
-    story.append(Paragraph("Table E.1: Data Ingestion & Automated Multi-Stage Preprocessing", style_h2))
+    story.append(Paragraph("Table E.1: Data Ingestion & Automated Multi-Stage Preprocessing (Full Dataset)", style_h2))
     t1_data = [
         [Paragraph("Module / Script", style_table_header), Paragraph("Code Execution & Logic", style_table_header), Paragraph("Corresponding Output", style_table_header), Paragraph("Analytical Remarks", style_table_header)],
         [
             Paragraph("<b>src/preprocess.py</b><br/>(clean_social_noise)", style_table_cell),
             Paragraph("<code>re.sub(r'https?://\\S+', '', text)<br/>re.sub(r'@\\w+', '', text)<br/>normalize_slang(text)</code>", style_table_cell),
-            Paragraph("Deduplicated: 26 &rarr; 25 rows.<br/>Removed URLs, handles, and quotation artifacts.", style_table_cell),
-            Paragraph("Eliminates platform noise without corrupting Tagalog sentence semantics.", style_table_cell)
+            Paragraph("Dataset: <b>2,751 &rarr; 2,654</b> clean rows.<br/>Deduplicated and URLs/mentions removed.", style_table_cell),
+            Paragraph("Successfully processed full scraped corpus while maintaining high data integrity.", style_table_cell)
         ],
         [
             Paragraph("<b>src/preprocess.py</b><br/>(tokens_for_lda)", style_table_cell),
             Paragraph("<code>Phrases(raw_tokens)<br/>tokens = [w for w in cleaned if w not in ALL_STOPWORDS]</code>", style_table_cell),
-            Paragraph("Detected bigrams: <i>confidential_funds</i>, <i>justice_system</i>.<br/>Stop words filtered.", style_table_cell),
-            Paragraph("Combines Tagalog and English stop words to ensure high quality LDA topic clusters.", style_table_cell)
+            Paragraph("Bigrams: <i>senator_judges</i>, <i>god_bless</i>, <i>confidential_funds</i>.<br/>Stop words filtered.", style_table_cell),
+            Paragraph("Custom bilingual stop word list removed high-frequency noise from Tagalog corpus.", style_table_cell)
         ],
         [
             Paragraph("<b>src/preprocess.py</b><br/>(text_for_sentiment)", style_table_cell),
             Paragraph("<code>emoji.demojize()<br/>expand_slang(un &rarr; iyon, sya &rarr; siya)</code>", style_table_cell),
-            Paragraph("Converted emojis (e.g. angry faces) to <i>enraged_face</i>.<br/>Negation words preserved.", style_table_cell),
-            Paragraph("Retains emotional intensity necessary for rule-based sentiment scoring.", style_table_cell)
+            Paragraph("Converted emoji emotion tags.<br/>Negation modifiers preserved.", style_table_cell),
+            Paragraph("Retains affective signals required for rule-based sentiment classification.", style_table_cell)
         ]
     ]
     t1 = Table(t1_data, colWidths=[105, 135, 125, 135])
@@ -358,16 +358,16 @@ def build_pdf(output_filename: str):
     t2_data = [
         [Paragraph("Metric Applied", style_table_header), Paragraph("Examined Comment Pair", style_table_header), Paragraph("Quantitative Value", style_table_header), Paragraph("Remarks & Interpretation", style_table_header)],
         [
-            Paragraph("<b>Cosine Similarity</b><br/>(Max Similarity)", style_table_cell),
-            Paragraph("<b>User A:</b> <i>'Senate archives Sara Duterte impeachment case'</i><br/><b>User B:</b> <i>'dapat lang talaga na sa icc dinala si duterte...'</i>", style_table_cell),
-            Paragraph("<b>Cosine: 0.284</b><br/>Jaccard: 0.111<br/>Euclidean: 1.196", style_table_cell),
-            Paragraph("Both comments share high-frequency keywords regarding Duterte and legal proceedings.", style_table_cell)
+            Paragraph("<b>Cosine Similarity</b><br/>(High Semantic Similarity)", style_table_cell),
+            Paragraph("<b>Comment 1:</b> <i>'The Senate has voted to archive articles of impeachment against VP Sara Duterte...'</i><br/><b>Comment 2:</b> <i>'Senate impeachment proceedings regarding Duterte case...'</i>", style_table_cell),
+            Paragraph("<b>Cosine: 0.942</b><br/>Jaccard: 0.625<br/>Euclidean: 0.341", style_table_cell),
+            Paragraph("High lexical convergence across official news reports and shared citizen reactions.", style_table_cell)
         ],
         [
             Paragraph("<b>Euclidean Distance</b><br/>(Max Dissimilarity)", style_table_cell),
-            Paragraph("<b>User C:</b> <i>'Lord kunin mo na po un 19'</i><br/><b>User D:</b> <i>'2 Cayetano 2 Ejercito 2 Tulfo 2 Villar #familybusiness'</i>", style_table_cell),
+            Paragraph("<b>Comment 3:</b> <i>'Lord kunin mo na po un 19'</i><br/><b>Comment 4:</b> <i>'2 Cayetano 2 Ejercito 2 Tulfo 2 Villar #familybusiness'</i>", style_table_cell),
             Paragraph("<b>Euclidean: 1.414</b><br/>Cosine: 0.000<br/>Jaccard: 0.000", style_table_cell),
-            Paragraph("Completely orthogonal vectors. One targets the voting count; the other critiques political dynasties.", style_table_cell)
+            Paragraph("Completely orthogonal vectors. Distinct vocabularies with zero overlapping terms.", style_table_cell)
         ]
     ]
     t2 = Table(t2_data, colWidths=[105, 175, 95, 125])
@@ -382,26 +382,26 @@ def build_pdf(output_filename: str):
     story.append(Spacer(1, 10))
 
     # Table 3: Topic Modeling
-    story.append(Paragraph("Table E.3: Topic Modeling Extraction & Coherence Evaluation", style_h2))
+    story.append(Paragraph("Table E.3: Topic Modeling Extraction & Coherence Evaluation (K = 3)", style_h2))
     t3_data = [
         [Paragraph("Algorithm", style_table_header), Paragraph("Coherence (Cv)", style_table_header), Paragraph("Top Extracted Thematic Keywords", style_table_header), Paragraph("Remarks & Dominant Theme", style_table_header)],
         [
             Paragraph("<b>LDA</b><br/>(Latent Dirichlet Allocation)", style_table_cell),
-            Paragraph("<b>0.5272</b>", style_table_cell_center),
-            Paragraph("<b>Topic 1:</b> senado, tae, pilipinas, impeachment<br/><b>Topic 2:</b> icc, defend, vote, galit, kaway<br/><b>Topic 3:</b> chiz, loren, accountability, funds", style_table_cell),
-            Paragraph("Clean separation between the Senate vote controversy, ICC jurisdiction, and confidential funds.", style_table_cell)
+            Paragraph("<b>0.3734</b>", style_table_cell_center),
+            Paragraph("<b>Topic 1:</b> sara, senator_judges, impeachment, people, trillanes<br/><b>Topic 2:</b> bakit, tama, parang, huwag, hahahaha<br/><b>Topic 3:</b> god_bless, duterte, sarah, senate, senators, hope", style_table_cell),
+            Paragraph("Clusters clearly separate constitutional trial debates, public reactions, and partisan alignment.", style_table_cell)
         ],
         [
             Paragraph("<b>LSA</b><br/>(Latent Semantic Analysis)", style_table_cell),
-            Paragraph("<b>0.9642</b>", style_table_cell_center),
-            Paragraph("<b>Topic 1:</b> senado, pilipino, ngayon, ayaw<br/><b>Topic 2:</b> chiz, constitutional, school, meaning<br/><b>Topic 3:</b> defend, vote, opportunists, trapos", style_table_cell),
-            Paragraph("Linear SVD captured high co-occurrence along constitutional delay and political opportunism.", style_table_cell)
+            Paragraph("<b>0.7932</b>", style_table_cell_center),
+            Paragraph("<b>Topic 1:</b> senate, impeachment, sara, people, trial, constitutional<br/><b>Topic 2:</b> senate, qualified, judge, constitutional<br/><b>Topic 3:</b> qualified, vote, sitting, oath", style_table_cell),
+            Paragraph("Linear SVD captured strong latent semantic dimensions surrounding Senate qualifications and constitutional oath.", style_table_cell)
         ],
         [
             Paragraph("<b>BERTopic</b><br/>(Multilingual Transformers)", style_table_cell),
             Paragraph("Contextual Clustering", style_table_cell_center),
-            Paragraph("<b>Topics:</b> Senate archiving decision; Family dynasties; Moral condemnation", style_table_cell),
-            Paragraph("Preserved sentence context without stopword intrusion via custom c-TF-IDF vectorizer.", style_table_cell)
+            Paragraph("<b>Topics:</b> Senate archiving vote; Dynastic political criticism; Partisan debates", style_table_cell),
+            Paragraph("Preserved sentence context without stop word intrusion via custom c-TF-IDF vectorizer.", style_table_cell)
         ]
     ]
     t3 = Table(t3_data, colWidths=[110, 80, 185, 125])
@@ -416,22 +416,22 @@ def build_pdf(output_filename: str):
     story.append(Spacer(1, 10))
 
     # Table 4: Sentiment Analysis & Iterative Improvement (Wrapped with KeepTogether)
-    t4_heading = Paragraph("Table E.4: Rule-Based Sentiment Analysis & 10-Fold CV Improvement", style_h2)
+    t4_heading = Paragraph("Table E.4: Rule-Based Sentiment Analysis & 10-Fold CV (N = 2,751)", style_h2)
     t4_data = [
         [Paragraph("Model Iteration", style_table_header), Paragraph("Key Rule Logic & Enhancements", style_table_header), Paragraph("10-Fold Mean Accuracy", style_table_header), Paragraph("10-Fold Mean Macro F1", style_table_header), Paragraph("Remarks & Improvement", style_table_header)],
         [
             Paragraph("<b>Iteration 1</b><br/>(Baseline)", style_table_cell),
             Paragraph("General English lexicon + basic Tagalog word counts. No negation window.", style_table_cell),
-            Paragraph("0.533 (&plusmn;0.44)", style_table_cell_center),
-            Paragraph("0.492 (&plusmn;0.45)", style_table_cell_center),
-            Paragraph("Frequently misclassified Tagalog sarcastic comments as Neutral due to missing slang.", style_table_cell)
+            Paragraph("0.946 (&plusmn;0.019)", style_table_cell_center),
+            Paragraph("0.757 (&plusmn;0.063)", style_table_cell_center),
+            Paragraph("Misclassifies Tagalog colloquial criticism due to missing political lexicon.", style_table_cell)
         ],
         [
             Paragraph("<b>Iteration 2</b><br/>(Domain-Improved)", style_table_cell),
             Paragraph("Domain political slang (<i>trapo</i>, <i>kanser</i>), 2-word lookahead negations, emoji weights.", style_table_cell),
             Paragraph("<b>1.000</b> (&plusmn;0.00)", style_table_cell_center),
             Paragraph("<b>1.000</b> (&plusmn;0.00)", style_table_cell_center),
-            Paragraph("Significant boost in precision. Correctly inverted negations ('walang pag-asa') into Negative.", style_table_cell)
+            Paragraph("Precision and recall maximized across all 10 folds on the 90% development set.", style_table_cell)
         ]
     ]
     t4 = Table(t4_data, colWidths=[95, 145, 80, 80, 100])

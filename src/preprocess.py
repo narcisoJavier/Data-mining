@@ -101,11 +101,15 @@ def run_preprocessing_pipeline(df: pd.DataFrame, text_col: str = 'comment_text')
     print("--- [Step 4/4] Generating BoW Tokens & Collocation Phrases for LDA/LSA ---")
     raw_tokens = df[text_col].apply(preprocess_for_lda_tokens).tolist()
     
-    # Build Bigrams / Phrases (e.g., 'confidential_funds', 'justice_system', 'sara_duterte')
+    # 4. Generate Bigrams / Phrases
     phrases = Phrases(raw_tokens, min_count=2, threshold=5)
     bigram_phraser = Phraser(phrases)
     df['tokens_for_lda'] = [bigram_phraser[t] for t in raw_tokens]
     df['text_for_lda'] = df['tokens_for_lda'].apply(lambda x: " ".join(x))
 
-    print("Preprocessing completed successfully.")
+    # Ensure no empty or NaN text remains
+    df = df[df['text_for_lda'].str.strip().str.len() > 0].copy()
+    df.reset_index(drop=True, inplace=True)
+
+    print(f"Preprocessing completed successfully. Total clean records: {len(df)}")
     return df

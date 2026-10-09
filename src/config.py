@@ -25,7 +25,8 @@ TAGALOG_STOPWORDS = {
     'baga', 'man', 'yata', 'kundi', 'habang', 'mula', 'hanggang', 'bago', 
     'pagkatapos', 'upang', 'kahit', 'bagaman', 'subalit', 'datapwat', 'un', 'ung',
     'yan', 'yun', 'eto', 'sya', 'nyo', 'nla', 'dina', 'jan', 'dn', 'oh', 'pla', 'ano',
-    'naging', 'dinig', 'nandyan', 'nandoon', 'nandito'
+    'naging', 'dinig', 'nandyan', 'nandoon', 'nandito', 'yung', 'nung', 'nya', 'kaya',
+    'hahaha', 'haha', 'dapat', 'talaga', 'nag', 'lahat', 'sir', 'hindi', 'di', 'walang'
 }
 
 ENGLISH_STOPWORDS = {

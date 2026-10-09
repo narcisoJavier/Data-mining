@@ -9,6 +9,13 @@ Performs end-to-end execution:
 
 import sys
 from pathlib import Path
+
+# Configure utf-8 stdout encoding for Windows console
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if sys.stderr and hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 import pandas as pd
 from tabulate import tabulate
 
